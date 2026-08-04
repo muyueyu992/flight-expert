@@ -62,21 +62,20 @@ const App = {
 
     try {
       const isProcess = q.includes('流程');
-      let results = searchKnowledge(q);
-
-      // 流程类问题排除技术/接口类条目
-      if (isProcess) {
-        results = results.filter(r => r.cat !== '接口');
-      }
-
       let context = '';
-      if (results.length) {
-        context = results.map((r, i) =>
-          `【${i+1}】分类：${r.cat}\n问题：${r.q}\n答案：${r.a}`
-        ).join('\n\n');
-      } else {
-        context = '知识库中未直接匹配到相关内容。请根据你的专业知识尽量回答，并建议用户联系对接人或发微信群确认。';
+
+      if (isProcess) {
+        // 流程模式：检索知识库，排除技术/接口类条目
+        let results = searchKnowledge(q).filter(r => r.cat !== '接口');
+        if (results.length) {
+          context = results.map((r, i) =>
+            `【${i+1}】分类：${r.cat}\n问题：${r.q}\n答案：${r.a}`
+          ).join('\n\n');
+        } else {
+          context = '知识库中未直接匹配到相关内容。请根据你的专业知识尽量回答，并建议用户联系对接人或发微信群确认。';
+        }
       }
+      // 专家模式：不取知识库，context 留空，纯靠专家理解回答
 
       const answer = await this.api.ask(q, context, this.history);
       thinking.innerHTML = this.renderAnswer(answer);
