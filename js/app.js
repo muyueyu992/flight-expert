@@ -2,16 +2,13 @@
    航班管家供应商助手 — App
    ============================================ */
 
-const DEFAULT_KEY = '35219dd3b6f441a5873d6d0c28b1de4e.r8Lb9LtVYFUa2U1j';
-
 const App = {
   api: null,
   history: [],
 
   async init() {
     const s = JSON.parse(localStorage.getItem('fe_settings') || '{}');
-    const key = s.apiKey || DEFAULT_KEY;
-    this.api = new AIClient(key);
+    this.api = s.apiKey ? new AIClient(s.apiKey) : null;
     this.bind();
     this.renderWelcome();
   },
@@ -53,6 +50,7 @@ const App = {
     const input = $('#chatInput');
     const q = input.value.trim();
     if (!q || this._sending) return;
+    if (!this.api) { this.toggleSettings(); return; }
     this._sending = true;
     input.value = '';
     $('#sendBtn').disabled = true;
@@ -202,9 +200,9 @@ const App = {
 
   resetKey() {
     localStorage.removeItem('fe_settings');
-    this.api = new AIClient(DEFAULT_KEY);
+    this.api = null;
     $('#apiKeyInput').value = '';
-    alert('已恢复默认 Key');
+    alert('Key 已清除，请重新设置');
     this.toggleSettings();
   },
 
