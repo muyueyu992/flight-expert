@@ -61,7 +61,14 @@ const App = {
     const thinking = this.addMsg('assistant', '<div class="thinking"><span></span><span></span><span></span></div>', true);
 
     try {
-      const results = searchKnowledge(q);
+      const isProcess = q.includes('流程');
+      let results = searchKnowledge(q);
+
+      // 流程类问题排除技术/接口类条目
+      if (isProcess) {
+        results = results.filter(r => r.cat !== '接口');
+      }
+
       let context = '';
       if (results.length) {
         context = results.map((r, i) =>
