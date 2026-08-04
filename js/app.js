@@ -107,11 +107,6 @@ const App = {
         return `<div class="ans-section">${title}</div>`;
       }
 
-      // 数字标题行：1. xxx 或 1、xxx（独占一行即标题）
-      if (/^\d+[\.、]\s*.+$/.test(p) && !p.includes('\n')) {
-        return `<div class="ans-heading">${p}</div>`;
-      }
-
       // Bullet items: - xxx 或 • xxx
       if (/^[-•]\s/.test(p)) {
         const items = p.split(/\n/).filter(Boolean);
@@ -120,7 +115,7 @@ const App = {
         ).join('') + '</ul>';
       }
 
-      // 多行数字列表：每行是 "1、xxx" 或 "1. xxx"
+      // 纯数字行列表：每行都是 "1、xxx" — 用 <ol>
       const lines = p.split(/\n/);
       if (lines.length >= 2 && lines.every(l => /^\d+[\.、]/.test(l.trim()))) {
         return '<ol class="ans-list">' + lines.map(l =>
@@ -128,7 +123,18 @@ const App = {
         ).join('') + '</ol>';
       }
 
-      // 普通段落：单换行 → <br>
+      // 按「换行+数字前缀」拆成编号条目块，解决 1、2、3 挤在一起的问题
+      const blocks = p.split(/\n(?=\d+[\.、])/);
+      if (blocks.length > 1) {
+        return blocks.map(b => this._renderNumberedBlock(b)).join('');
+      }
+
+      // 单块但以数字开头：带标题的条目
+      if (/^\d+[\.、]/.test(p)) {
+        return this._renderNumberedBlock(p);
+      }
+
+      // 普通段落
       p = p.replace(/\n/g, '<br>');
       return `<p>${p}</p>`;
     }).join('');
@@ -137,6 +143,18 @@ const App = {
     html = html.replace(/【(.+?)】/g, '<span class="ref-tag">$1</span>');
 
     return `<div class="answer-text">${html}</div>`;
+  },
+
+  // 编号条目："1、标题\n内容内容" → 标题行 + 内容区
+  _renderNumberedBlock(text) {
+    const idx = text.indexOf('\n');
+    if (idx > 0) {
+      const heading = text.substring(0, idx);
+      const body = text.substring(idx + 1).replace(/\n/g, '<br>');
+      return `<div class="ans-item"><div class="ans-item-heading">${heading}</div><div class="ans-item-body">${body}</div></div>`;
+    }
+    // 只有标题，没内容
+    return `<div class="ans-item-heading" style="margin-top:12px">${text}</div>`;
   },
 
   addMsg(role, content, isHtml = false) {
