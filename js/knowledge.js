@@ -177,38 +177,166 @@ const KNOWLEDGE_BASE = [
   { cat:'政策投放', q:'增量上传', a:'增量上传是在原政策基础上新增上传的政策，单次最多3w条。' },
   { cat:'出票', q:'支付前校验6分钟', a:'支付前校验接口成功后，需保证6分钟内不拒单；6分钟外拒单产生的损失可申诉。' },
   { cat:'结算+提现+对账', q:'保证金', a:'冻结5W出票款项作为保证金。' },
+
+  // ===== 三字码/机场城市代码（常见易混淆代码） =====
+  { cat:'三字码', q:'TYO 东京 东京城市码 东京机场', a:'TYO是东京城市码（City Code），代表东京所有机场，包括：\n- NRT（成田国际机场）\n- HND（羽田机场/东京国际机场）\n\nTYO本身不是机场码，订票时不能用TYO，需用具体机场码NRT或HND。' },
+  { cat:'三字码', q:'NRT 成田 成田机场码', a:'NRT是成田国际机场（Narita International Airport）的IATA机场码，位于日本千叶县成田市，是东京地区的主要国际机场。东京共有两个机场：NRT（成田）和HND（羽田），城市码为TYO。' },
+  { cat:'三字码', q:'HND 羽田 羽田机场码 东京羽田', a:'HND是羽田机场/东京国际机场（Haneda Airport）的IATA机场码，位于日本东京都大田区，距市中心比成田更近。东京共有两个机场：NRT（成田）和HND（羽田），城市码为TYO。' },
+  { cat:'三字码', q:'OSA 大阪城市码', a:'OSA是大阪城市码（City Code），代表大阪所有机场，包括：\n- KIX（关西国际机场）\n- ITM（大阪伊丹机场）\n\nOSA本身不是机场码，订票时需用KIX或ITM。' },
+  { cat:'三字码', q:'KIX 关西机场码', a:'KIX是关西国际机场（Kansai International Airport）的IATA机场码，位于日本大阪府泉佐野市，是大阪地区的主要国际机场。' },
+  { cat:'三字码', q:'ITM 伊丹机场码', a:'ITM是大阪伊丹机场（Osaka Itami Airport）的IATA机场码，位于日本兵库县伊丹市，主要服务日本国内航线。' },
+  { cat:'三字码', q:'BJS 北京城市码 北京机场', a:'BJS是北京城市码（City Code），代表北京所有机场，包括：\n- PEK（首都国际机场）\n- PKX（大兴国际机场）\n\nBJS本身不是机场码，订票时需用PEK或PKX。' },
+  { cat:'三字码', q:'SHA 上海城市码 上海机场', a:'SHA是上海城市码（City Code），代表上海所有机场，包括：\n- PVG（浦东国际机场）\n- SHA（虹桥国际机场）\n\n注意：SHA既是城市码也是虹桥机场码，使用时需确认指代的是城市还是机场。' },
+  { cat:'三字码', q:'SEL 首尔城市码', a:'SEL是首尔城市码（City Code），代表首尔所有机场，包括：\n- ICN（仁川国际机场）\n- GMP（金浦国际机场）\n\nSEL本身不是机场码，订票时需用ICN或GMP。' },
+  { cat:'三字码', q:'LON 伦敦城市码', a:'LON是伦敦城市码（City Code），代表伦敦所有机场，包括：LHR（希思罗）、LGW（盖特威克）、STN（斯坦斯特德）、LTN（卢顿）、LCY（伦敦城市机场）。LON本身不是机场码。' },
+  { cat:'三字码', q:'NYC 纽约城市码', a:'NYC是纽约城市码（City Code），代表纽约所有机场，包括：JFK（肯尼迪国际机场）、EWR（纽瓦克自由国际机场）、LGA（拉瓜迪亚机场）。NYC本身不是机场码。' },
+  { cat:'三字码', q:'PAR 巴黎城市码', a:'PAR是巴黎城市码（City Code），代表巴黎所有机场，包括：CDG（戴高乐国际机场）、ORY（奥利机场）。PAR本身不是机场码。' },
+  { cat:'三字码', q:'ROM 罗马城市码', a:'ROM是罗马城市码（City Code），代表罗马所有机场，包括：FCO（菲乌米奇诺/达芬奇机场）、CIA（钱皮诺机场）。ROM本身不是机场码。' },
+  { cat:'三字码', q:'MOW 莫斯科城市码', a:'MOW是莫斯科城市码（City Code），代表莫斯科所有机场，包括：SVO（谢列梅捷沃）、DME（多莫杰多沃）、VKO（伏努科沃）。MOW本身不是机场码。' },
+  { cat:'三字码', q:'城市码 机场码 区别 City Code 三字码类型', a:'IATA三字码分两种类型：\n\n1. 城市码（City Code）：代表一个城市的所有机场，如TYO（东京）、BJS（北京）、LON（伦敦）、NYC（纽约）。城市码不能直接用于订票，需指定具体机场码。\n\n2. 机场码（Airport Code）：代表具体的某个机场，如NRT（成田）、PEK（首都）、PVG（浦东）。订票时需使用机场码。\n\n常见混淆：TYO是东京城市码不是成田机场码，NRT才是成田机场码。' },
+  { cat:'三字码', q:'PEK 首都机场码 北京首都', a:'PEK是北京首都国际机场的IATA机场码。北京有两个主要机场：PEK（首都国际机场）和PKX（大兴国际机场），城市码为BJS。' },
+  { cat:'三字码', q:'PKX 大兴机场码 北京大兴', a:'PKX是北京大兴国际机场的IATA机场码，2019年通航。北京有两个主要机场：PEK（首都国际机场）和PKX（大兴国际机场），城市码为BJS。' },
+  { cat:'三字码', q:'PVG 浦东机场码 上海浦东', a:'PVG是上海浦东国际机场的IATA机场码。上海有两个机场：PVG（浦东国际机场）和SHA（虹桥国际机场），城市码为SHA。' },
+  { cat:'三字码', q:'ICN 仁川机场码', a:'ICN是仁川国际机场（Incheon International Airport）的IATA机场码，是首尔地区的主要国际机场。首尔有两个机场：ICN（仁川）和GMP（金浦），城市码为SEL。' },
+  { cat:'三字码', q:'CAN 广州机场码 白云机场', a:'CAN是广州白云国际机场的IATA机场码。' },
+  { cat:'三字码', q:'CTU 成都机场码', a:'CTU是成都双流国际机场的IATA机场码。成都另有机场TFU（天府国际机场）。' },
+  { cat:'三字码', q:'SZX 深圳机场码', a:'SZX是深圳宝安国际机场的IATA机场码。' },
+  { cat:'三字码', q:'CKG 重庆机场码', a:'CKG是重庆江北国际机场的IATA机场码。' },
+  { cat:'三字码', q:'XMN 厦门机场码', a:'XMN是厦门高崎国际机场的IATA机场码。' },
+  { cat:'三字码', q:'TAO 青岛机场码', a:'TAO是青岛胶东国际机场的IATA机场码。' },
+  { cat:'三字码', q:'WUH 武汉机场码', a:'WUH是武汉天河国际机场的IATA机场码。' },
+  { cat:'三字码', q:'SYX 三亚机场码', a:'SYX是三亚凤凰国际机场的IATA机场码。' },
+  { cat:'三字码', q:'HAK 海口机场码', a:'HAK是海口美兰国际机场的IATA机场码。' },
+  { cat:'三字码', q:'KMG 昆明机场码', a:'KMG是昆明长水国际机场的IATA机场码。' },
+  { cat:'三字码', q:'HGH 杭州机场码', a:'HGH是杭州萧山国际机场的IATA机场码。' },
+  { cat:'三字码', q:'NKG 南京机场码', a:'NKG是南京禄口国际机场的IATA机场码。' },
+  { cat:'三字码', q:'XIY 西安机场码', a:'XIY是西安咸阳国际机场的IATA机场码。' },
+  { cat:'三字码', q:'URC 乌鲁木齐机场码', a:'URC是乌鲁木齐地窝堡国际机场的IATA机场码。' },
+
+  // ===== 国内机场三字码完整对照表 =====
+  { cat:'三字码', q:'机场三字码 机场代码 国内机场码 三字码对照表 机场码查询', a:`国内机场IATA三字码对照表（代码=城市）：
+OHE=漠河 | AKU=阿克苏 | AAT=阿勒泰 | BSD=保山 | AOG=鞍山 | AKA=安康 | AQG=安庆 | AVA=安顺 | BFU=蚌埠 | BAV=包头
+AEB=百色 | BHY=北海 | PEK=北京首都 | NAY=北京南苑 | PKX=北京大兴 | BPX=昌都 | CGD=常德 | CZX=常州 | CGQ=长春 | CNI=长海
+CSX=长沙 | CIH=长治 | CHG=朝阳 | CTU=成都双流 | TFU=成都天府 | CIF=赤峰 | CKG=重庆 | DAX=达县 | DLU=大理 | DLC=大连
+DAT=大同 | DDG=丹东 | DIG=迪庆 | DOY=东营 | DNH=敦煌 | ENH=恩施 | DSN=鄂尔多斯 | FUO=佛山 | FOC=福州 | FUG=阜阳
+FYN=富蕴 | KOW=赣州 | GOQ=格尔木 | GHN=广汉 | GYS=广元 | CAN=广州 | KWL=桂林 | KWE=贵阳 | HRB=哈尔滨 | HMI=哈密
+HAK=海口 | HLD=海拉尔 | HZG=汉中 | HGH=杭州 | HTN=和田 | HFE=合肥 | HEK=黑河 | HET=呼和浩特 | HDG=邯郸 | TXN=黄山
+HYN=黄岩 | HUZ=徽州 | HJJ=怀化/芷江 | KNC=吉安 | JIL=吉林 | TNA=济南 | JNG=济宁 | JGN=嘉峪关 | JMU=佳木斯 | JNZ=锦州
+JJN=晋江 | JGS=井岗山 | JDZ=景德镇 | JIU=九江 | JZH=九寨沟 | TCZ=腾冲 | CHW=酒泉 | KHG=喀什 | KRY=克拉玛依 | KCA=库车
+KRL=库尔勒 | KMG=昆明 | LXA=拉萨 | LHW=兰州 | LJG=丽江 | LCX=连成 | LYG=连云港 | LIA=梁平 | LXI=林西 | LNJ=临沧
+LYI=临沂 | LZH=柳州 | LUZ=庐山 | LDG=罗定 | LYA=洛阳 | LZO=泸州 | HZH=黎平 | LZY=林芝 | NZH=满洲里 | LUM=芒市
+MXZ=梅县 | MIG=绵阳 | MDG=牡丹江 | KHN=南昌 | NAO=南充 | NKG=南京 | NNG=南宁 | NTG=南通 | NNY=南阳 | NGB=宁波
+PZI=攀枝花 | NDG=齐齐哈尔 | IQM=且末 | SHP=秦皇岛 | TAO=青岛 | IQN=庆阳 | JUZ=衢州 | SYX=三亚 | SHS=沙市 | SWA=汕头/揭阳
+SHA=上海虹桥 | PVG=上海浦东 | HSC=韶关 | SZX=深圳 | SHE=沈阳 | SJW=石家庄 | SYM=思芋 | SZV=苏州 | SXJ=鄯善 | TCG=塔城
+TYN=太原 | TSN=天津 | TGO=通辽 | TEN=铜仁 | WXN=万州 | WEH=威海 | WEF=潍坊 | WNZ=温州 | HLH=乌兰浩特 | URC=乌鲁木齐
+WUX=无锡 | WUZ=梧州 | WUH=武汉 | WUS=武夷山 | XIY=西安 | XIC=西昌 | XNN=西宁 | JHG=西双版纳 | XMN=厦门 | XFN=襄樊
+XUZ=徐州 | ACX=兴义 | YNT=烟台 | YNZ=盐城 | ENY=延安 | YNJ=延吉 | YLN=伊兰 | YIN=伊宁 | YBP=宜宾 | YIH=宜昌
+YIW=义乌 | INC=银川 | LLF=永州 | UYN=榆林 | YCU=运城 | ZHA=湛江 | DYG=张家界 | ZAT=昭通 | CGO=郑州 | HSN=舟山
+ZUH=珠海 | ZYI=遵义 | LDS=伊春 | ZQZ=张家口 | NBS=长白山 | JIQ=黔江 | HIA=淮安 | TVS=唐山 | YUS=玉树 | XIL=锡林浩特` },
+
+  // ===== 航司二字码完整对照表 =====
+  { cat:'三字码', q:'航司二字码 航空公司代码 二字码对照表 航司代码 IATA航司码', a:`航空公司IATA二字码对照表：
+
+【国内航司】
+DZ=东海航空 | YI=英安航空 | GJ=长龙航空 | CA=中国国际航空(国航) | MU=中国东方航空(东航) | CZ=中国南方航空(南航) | MF=厦门航空
+3U=四川航空 | FM=上海航空 | ZH=深圳航空 | SC=山东航空 | HU=海南航空 | KN=中国联合航空 | BK=奥凯航空 | 9C=春秋航空
+EU=鹰联航空 | PN=西部航空 | HO=吉祥航空 | CN=大新华航空 | G5=华夏航空 | DJ=金鹿航空 | XO=新疆航空 | Y8=扬子江快运
+3Q=云南航空 | 2Z=长安航空 | 8C=山西航空 | GD=银河航空 | NS=东北航空 | 8Y=中国邮政航空 | X2=中国新华航空 | OQ=重庆航空
+VD=鲲鹏航空 | IJ=长城航空
+
+【港澳台航司】
+KA=港龙航空 | CX=国泰航空 | NX=澳门航空 | HX=香港航空
+
+【海外航司】
+AA=美国航空 | UA=美国联合航空 | CO=美国大陆航空 | NW=美国西北航空 | DL=达美航空 | AC=加拿大航空 | BA=英国航空
+LH=德国汉莎航空 | AF=法国航空 | KL=荷兰皇家航空 | AZ=意大利航空 | AY=芬兰航空 | SK=北欧航空 | OS=奥地利航空
+LX=瑞士航空 | TK=土耳其航空 | SU=俄罗斯航空 | FV=俄罗斯普尔科沃航空 | S7=新西伯利亚航空 | RU=伏尔加航空
+E3=多莫迪多沃航空 | 7B=克拉斯诺雅茨克航空 | KC=哈萨克斯坦航空 | HY=乌兹别克斯坦航空 | T5=土库曼斯坦航空
+JL=日本航空 | NH=全日空航空 | KZ=日本货物航空 | KE=大韩航空 | OZ=韩亚航空 | JS=朝鲜航空 | OM=蒙古航空
+CA=中国国航 | MU=东航 | CZ=南航 | SQ=新加坡航空 | VN=越南航空 | TG=泰国航空 | MH=马来西亚航空 | UL=斯里兰卡航空
+GA=印尼航空 | PR=菲律宾航空 | PK=巴基斯坦航空 | IR=伊朗航空 | LY=以色列航空 | JU=南斯拉夫航空
+QR=卡塔尔航空 | EK=阿联酋航空 | EY=阿联酋阿提哈德航空 | MS=埃及航空 | ET=埃塞俄比亚航空
+QF=澳大利亚航空 | NZ=新西兰航空 | PO=波兰航空/博立航空 | CV=卢森堡航空 | UM=津巴布韦航空
+FX=联邦快递 | 5X=联合包裹(UPS) | XF=海参崴航空 | VV=乌克兰航空` },
 ];
+
+// 中文分词：Intl.Segmenter（现代浏览器） + bigram 回退
+function segmentChinese(text) {
+  if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+    try {
+      const seg = new Intl.Segmenter('zh-CN', { granularity: 'word' });
+      const words = [];
+      for (const s of seg.segment(text)) {
+        if (s.isWordLike && s.segment.trim().length >= 2) {
+          words.push(s.segment);
+        }
+      }
+      if (words.length > 0) return words;
+    } catch (_) { /* fallback */ }
+  }
+  // 回退：bigram 滑动窗口
+  const bigrams = [];
+  for (let i = 0; i < text.length - 1; i++) {
+    const b = text.substring(i, i + 2);
+    if (/^[一-鿿]{2}$/.test(b)) bigrams.push(b);
+  }
+  return bigrams;
+}
+
+// 意图分类（用于专家模式调整回答策略）
+function classifyQueryIntent(query) {
+  const q = query.toLowerCase();
+  const patterns = {
+    troubleshoot: /排查|不进单|无法|异常|报错|失败|没有|看不到|怎么不|为什么不|不出|不展示|没了|突然|点不动|登录不上|登录不了|超时|未收到|未通知|查不到|无法查询|找不/,
+    time_limit:    /时限|多久|时间|超时|时效|多长时间|几个小时|几分钟|几天|几点|截止/,
+    penalty:       /罚款|处罚|扣款|红线|违规|罚|违约金|暂停|警告|考核/,
+    comparison:    /区别|对比|哪个|还是|选择|不同|差异|哪种|怎么选|有什么不一样/,
+    how_to:        /怎么|如何|怎样|步骤|流程|操作|处理方式|渠道|途径|方式|方法|在哪|哪里/,
+    amount:        /多少钱|费用|金额|价格|票价|手续费|升舱|差价|退票费|改期费/,
+    policy:        /政策|投放|上传|运价|报价|输出|展示|比价|追价|产品码|运价源|运价类型|productTag/,
+  };
+  for (const [intent, re] of Object.entries(patterns)) {
+    if (re.test(q)) return intent;
+  }
+  return 'factual';
+}
 
 // 搜索知识库，返回相关条目（按匹配度排序）
 function searchKnowledge(query) {
   const q = query.toLowerCase();
+  const qWords = segmentChinese(query);
+
   const scored = KNOWLEDGE_BASE.map(item => {
     let score = 0;
     const catLow = item.cat.toLowerCase();
     const qLow = item.q.toLowerCase();
     const aLow = item.a.toLowerCase();
 
-    // 用户查询直接匹配问题或分类
-    if (qLow.includes(q)) score += 10;
-    if (catLow.includes(q)) score += 8;
+    // 分类名精确匹配
+    if (catLow === q) score += 20;
+    if (q.includes(catLow) || catLow.includes(q)) score += 10;
 
-    // 中文分词：按空格切分 + 2字符滑动窗口
-    let words = q.split(/\s+/);
-    if (/[一-鿿]/.test(q)) {
-      const bigrams = [];
-      for (let i = 0; i < q.length - 1; i++) {
-        bigrams.push(q.substring(i, i + 2));
-      }
-      words = [...new Set([...words, ...bigrams])];
+    // 问题文本精确匹配
+    if (qLow === q || q.includes(qLow)) score += 15;
+
+    // 分词匹配：在问题、分类、答案中的命中
+    for (const w of qWords) {
+      const wLower = w.toLowerCase();
+      if (qLow.includes(wLower)) score += 6;
+      if (catLow.includes(wLower)) score += 4;
+      if (aLow.includes(wLower)) score += 2;
     }
-    for (const w of words) {
-      if (w.length < 2) continue;
-      if (qLow.includes(w)) score += 5;
-      if (catLow.includes(w)) score += 3;
-      if (aLow.includes(w)) score += 2;
+
+    // 全部分词都命中答案 → 高相关性
+    if (qWords.length >= 2 && qWords.every(w => aLow.includes(w.toLowerCase()))) {
+      score += 4;
     }
-    // 全部词都在答案中出现
-    if (words.filter(w => w.length >= 2).every(w => aLow.includes(w))) score += 2;
+
+    // 全部分词都命中问题文本 → 极高相关性
+    if (qWords.length >= 2 && qWords.every(w => qLow.includes(w.toLowerCase()))) {
+      score += 8;
+    }
+
     return { ...item, score };
   });
 

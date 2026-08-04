@@ -71,9 +71,16 @@ const App = {
         context = '知识库中未直接匹配到相关内容。请根据你的专业知识尽量回答，并建议用户联系对接人或发微信群确认。';
       }
 
-      const answer = await this.api.ask(q, context);
+      const answer = await this.api.ask(q, context, this.history);
       thinking.innerHTML = this.renderAnswer(answer);
       this.scrollBottom();
+
+      // 记录对话历史（保留最近10轮）
+      this.history.push({ role: 'user', content: q });
+      this.history.push({ role: 'assistant', content: answer });
+      if (this.history.length > 20) {
+        this.history = this.history.slice(-20);
+      }
     } catch (e) {
       thinking.innerHTML = `<div class="err">出错了：${this.esc(e.message)}</div>`;
     }
@@ -84,12 +91,51 @@ const App = {
   },
 
   renderAnswer(text) {
-    let html = this.esc(text);
-    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    html = html.replace(/\n/g, '<br>');
-    html = html.replace(/(\d+[、.])/g, '<br>$1');
-    html = html.replace(/^<br>/, '');
+    // 按双换行拆成段落
+    const paragraphs = text.split(/\n\n+/);
+
+    let html = paragraphs.map(p => {
+      p = this.esc(p.trim());
+      if (!p) return '';
+
+      // Bold
+      p = p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+      // Section header: ### xxx 或 ## xxx
+      if (/^#{2,3}\s/.test(p)) {
+        const title = p.replace(/^#{2,3}\s+/, '');
+        return `<div class="ans-section">${title}</div>`;
+      }
+
+      // 数字标题行：1. xxx 或 1、xxx（独占一行即标题）
+      if (/^\d+[\.、]\s*.+$/.test(p) && !p.includes('\n')) {
+        return `<div class="ans-heading">${p}</div>`;
+      }
+
+      // Bullet items: - xxx 或 • xxx
+      if (/^[-•]\s/.test(p)) {
+        const items = p.split(/\n/).filter(Boolean);
+        return '<ul class="ans-list">' + items.map(item =>
+          `<li>${item.replace(/^[-•]\s+/, '')}</li>`
+        ).join('') + '</ul>';
+      }
+
+      // 多行数字列表：每行是 "1、xxx" 或 "1. xxx"
+      const lines = p.split(/\n/);
+      if (lines.length >= 2 && lines.every(l => /^\d+[\.、]/.test(l.trim()))) {
+        return '<ol class="ans-list">' + lines.map(l =>
+          `<li>${l.replace(/^\d+[\.、]\s*/, '')}</li>`
+        ).join('') + '</ol>';
+      }
+
+      // 普通段落：单换行 → <br>
+      p = p.replace(/\n/g, '<br>');
+      return `<p>${p}</p>`;
+    }).join('');
+
+    // 参考标签
     html = html.replace(/【(.+?)】/g, '<span class="ref-tag">$1</span>');
+
     return `<div class="answer-text">${html}</div>`;
   },
 
@@ -108,6 +154,7 @@ const App = {
 
   clearHistory() {
     $('#chatList').innerHTML = '';
+    this.history = [];
     this.renderWelcome();
   },
 
