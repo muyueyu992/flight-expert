@@ -260,27 +260,27 @@ QF=澳大利亚航空 | NZ=新西兰航空 | PO=波兰航空/博立航空 | CV=�
 FX=联邦快递 | 5X=联合包裹(UPS) | XF=海参崴航空 | VV=乌克兰航空` },
 ];
 
-// 中文分词：Intl.Segmenter（现代浏览器） + bigram 回退
+// 中文分词：bigram 兜底 + Intl.Segmenter 增强
 function segmentChinese(text) {
+  // 始终生成 bigram 作为可靠基底
+  const words = [];
+  for (let i = 0; i < text.length - 1; i++) {
+    const b = text.substring(i, i + 2);
+    if (/^[一-鿿]{2}$/.test(b)) words.push(b);
+  }
+
+  // Intl.Segmenter 增强（不用 isWordLike，避免浏览器差异导致空结果）
   if (typeof Intl !== 'undefined' && Intl.Segmenter) {
     try {
       const seg = new Intl.Segmenter('zh-CN', { granularity: 'word' });
-      const words = [];
       for (const s of seg.segment(text)) {
-        if (s.isWordLike && s.segment.trim().length >= 2) {
-          words.push(s.segment);
-        }
+        const w = s.segment.trim();
+        if (w.length >= 2) words.push(w);
       }
-      if (words.length > 0) return words;
-    } catch (_) { /* fallback */ }
+    } catch (_) { /* ignore */ }
   }
-  // 回退：bigram 滑动窗口
-  const bigrams = [];
-  for (let i = 0; i < text.length - 1; i++) {
-    const b = text.substring(i, i + 2);
-    if (/^[一-鿿]{2}$/.test(b)) bigrams.push(b);
-  }
-  return bigrams;
+
+  return [...new Set(words)];
 }
 
 // 意图分类（用于专家模式调整回答策略）
